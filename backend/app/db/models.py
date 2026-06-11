@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, Boolean
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 
 from app.db.session import Base
 
@@ -22,4 +23,4 @@ class Email(Base):
 
     is_processed = Column(Boolean, default=False)
 
-
+    drafts = relationship("EmailDraft", backref="email")

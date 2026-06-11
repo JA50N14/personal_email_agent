@@ -1,5 +1,8 @@
 from app.db.session import Base, engine
-from app.db import models  # IMPORTANT: registers models
+
+# IMPORTANT: registers models
+from app.db import models  
+from app.db.draft_models import EmailDraft
 
 
 def init_db():
