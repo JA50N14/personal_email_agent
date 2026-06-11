@@ -25,6 +25,15 @@ class DraftService:
             raise ValueError(
                 f"Email {email_id} not found"
             )
+        
+        existing_draft = (
+            self.draft_repository.get_pending_draft_for_email(
+                email.id
+            )
+        )
+
+        if existing_draft:
+            return existing_draft
 
         draft_body = self.draft_generator.generate(
             {

@@ -25,3 +25,21 @@ class DraftRepository:
         self.db.refresh(draft)
 
         return draft
+    
+    def get_pending_draft_for_email(self, email_id):
+        return (
+            self.db.query(EmailDraft)
+            .filter(
+                EmailDraft.email_id == email_id,
+                EmailDraft.status == "pending",
+            )
+            .first()
+        )
+
+    def get_drafts_for_email(self, email_id):
+        return (
+            self.db.query(EmailDraft)
+            .filter(EmailDraft.email_id == email_id)
+            .order_by(EmailDraft.created_at.desc())
+            .all()
+        )

@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from contextlib import asynccontextmanager
 
+from app.api.draft_routes import router as draft_router
+from app.api.email_routes import router as email_router
 from app.db.init_db import init_db
 from app.db.session import get_db
 from app.services.email_repository import EmailRepository
@@ -16,9 +18,9 @@ async def lifespan(app: FastAPI):
     init_db()
     yield
 
-
 app = FastAPI(lifespan=lifespan)
-
+app.include_router(draft_router)
+app.include_router(email_router)
 
 @app.get("/")
 def root():

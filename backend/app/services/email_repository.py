@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from app.db.models import Email
+from datetime import datetime, timedelta, timezone
 
 
 class EmailRepository:
@@ -37,5 +38,14 @@ class EmailRepository:
 
     def get_all(self):
         return self.db.query(Email).all()
-    
-    
+
+    def get_recent_emails(self, days: int):
+        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+
+        return (
+            self.db.query(Email)
+            .filter(Email.received_at >= cutoff)
+            .order_by(Email.received_at.desc())
+            .all()
+        )
+        
