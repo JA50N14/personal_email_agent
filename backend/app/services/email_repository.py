@@ -44,8 +44,20 @@ class EmailRepository:
 
         return (
             self.db.query(Email)
+            .workflow_status.in_(["new", "draft_exists"])
             .filter(Email.received_at >= cutoff)
             .order_by(Email.received_at.desc())
             .all()
         )
+
+    def update_workflow_status(
+        self,
+        email_id,
+        workflow_status,
+    ):
+        email = self.get_by_id(email_id)
+        email.workflow_status = workflow_status
+        self.db.commit()
+        self.db.refresh(email)
+        return email
         

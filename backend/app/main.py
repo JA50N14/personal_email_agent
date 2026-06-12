@@ -5,12 +5,12 @@ from contextlib import asynccontextmanager
 
 from app.api.draft_routes import router as draft_router
 from app.api.email_routes import router as email_router
+from app.api.ui_routes import router as ui_router
 from app.db.init_db import init_db
 from app.db.session import get_db
 from app.services.email_repository import EmailRepository
 from app.email_providers.gmail_provider import GmailProvider
 from app.services.email_sync_service import EmailSyncService
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -21,6 +21,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(draft_router)
 app.include_router(email_router)
+app.include_router(ui_router)
 
 @app.get("/")
 def root():

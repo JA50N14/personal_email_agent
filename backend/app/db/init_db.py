@@ -1,9 +1,7 @@
-from app.db.session import Base, engine
+from app.db.base import Base
+from app.db.session import engine
 
-# IMPORTANT: registers models
-from app.db import models  
-from app.db.draft_models import EmailDraft
-
+import app.db # Ensure models are loaded first
 
 def init_db():
     Base.metadata.create_all(bind=engine)

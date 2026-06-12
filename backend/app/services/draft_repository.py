@@ -43,3 +43,10 @@ class DraftRepository:
             .order_by(EmailDraft.created_at.desc())
             .all()
         )
+    
+    def get_by_id(self, draft_id: int):
+        return (
+            self.db.query(EmailDraft)
+            .filter(EmailDraft.id == draft_id)
+            .first()
+        )

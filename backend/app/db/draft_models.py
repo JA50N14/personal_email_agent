@@ -13,7 +13,7 @@ class EmailDraft(Base):
 
     draft_body = Column(Text, nullable=False)
 
-    status = Column(String, default="pending")  # pending | approved | rejected | skipped
+    status = Column(String, default="pending")  # pending | rejected | sent
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

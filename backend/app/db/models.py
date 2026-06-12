@@ -23,4 +23,7 @@ class Email(Base):
 
     is_processed = Column(Boolean, default=False)
 
+    workflow_status = Column(String, nullable=False, default="new") # new | draft_exists | sent | skipped
+
     drafts = relationship("EmailDraft", backref="email")
+

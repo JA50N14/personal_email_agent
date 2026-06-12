@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inbox</title>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+
+<body>
+    <h1>Inbox (Last 10 Days)</h1>
+
+    <ul>
+        {% for email in emails %}
+            <li style="margin-bottom: 12px;">
+                <strong>{{ email.subject }}</strong><br/>
+                From: {{ email.sender }}<br/>
+                Received: {{ email.received_at }}
+
+                <br/>
+
+                <button
+                    hx-post="/emails/{{ email.id }}/generate-draft"
+                    hx-target="this"
+                    hx-swap="outerHTML"
+                >
+                    Create Draft
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
