@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Inbox</title>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
@@ -10,22 +11,28 @@
 
     <ul>
         {% for email in emails %}
-            <li style="margin-bottom: 12px;">
-                <strong>{{ email.subject }}</strong><br/>
-                From: {{ email.sender }}<br/>
-                Received: {{ email.received_at }}
+        <li id="email-{{ email.id }}" style="margin-bottom: 20px;">
+            <strong>{{ email.subject }}</strong><br />
 
-                <br/>
+            <strong>From:</strong> {{ email.sender }}<br />
 
-                <button
-                    hx-post="/emails/{{ email.id }}/generate-draft"
-                    hx-target="this"
-                    hx-swap="outerHTML"
-                >
-                    Create Draft
-                </button>
-            </li>
+            <strong>Received:</strong> {{ email.received_at }}<br />
+
+            <strong>Body:</strong><br />
+            {{ (email.body or '')[:100] }}{% if email.body and email.body|length > 100 %}...{% endif %}
+
+            <br /><br />
+
+            <button hx-post="/emails/{{ email.id }}/generate-draft" hx-target="this" hx-swap="outerHTML">
+                Create Draft
+            </button>
+
+            <button hx-post="/emails/{{ email.id }}/skip" hx-target="#email-{{ email.id }}" hx-swap="outerHTML">
+                Skip
+            </button>
+        </li>
         {% endfor %}
     </ul>
 </body>
+
 </html>

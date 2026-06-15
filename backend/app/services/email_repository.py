@@ -44,7 +44,9 @@ class EmailRepository:
 
         return (
             self.db.query(Email)
-            .workflow_status.in_(["new", "draft_exists"])
+            .filter(
+                Email.workflow_status.in_(["new", "draft_exists"])
+            )
             .filter(Email.received_at >= cutoff)
             .order_by(Email.received_at.desc())
             .all()

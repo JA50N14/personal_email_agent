@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import Response
+
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
@@ -24,3 +26,12 @@ def inbox(request: Request, db: Session = Depends(get_db)):
             "emails": emails,
         },
     )
+
+@router.post("/emails/{email_id}/skip")
+def skip_email(email_id: str, db: Session = Depends(get_db)):
+    repo = EmailRepository(db)
+
+    repo.update_workflow_status(email_id, "skipped")
+
+    # remove element from DOM
+    return HTMLResponse("")
